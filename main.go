@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"plant-system-api/api/routes"
 
 	"github.com/labstack/echo/v4"
@@ -12,5 +13,5 @@ func main() {
 	route := routes.NewRoute(e)
 	route.Init()
 
-	e.Logger.Fatal(e.Start(":80"))
+	e.Logger.Fatal(e.Start(os.Getenv("PORT")))
 }

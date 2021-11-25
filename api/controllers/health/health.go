@@ -14,5 +14,5 @@ func NewHealthController() healthctlritf.HealthController {
 }
 
 func (ct *healthController) GetHealth(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
+	return c.JSON(http.StatusOK, map[string]string{"status": "up"})
 }
