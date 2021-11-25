@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"plant-system-api/api/routes"
 
@@ -13,5 +14,5 @@ func main() {
 	route := routes.NewRoute(e)
 	route.Init()
 
-	e.Logger.Fatal(e.Start(os.Getenv("PORT")))
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", os.Getenv("PORT"))))
 }
