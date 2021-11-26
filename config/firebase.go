@@ -19,7 +19,6 @@ func NewFirebaseClient() (*db.Client, error) {
 	opt := option.WithCredentialsFile(os.Getenv("FIREBASE_CREDENTIALS_FILE_PATH"))
 	app, err := firebase.NewApp(ctx, conf, opt)
 	if err != nil {
-		// log.Fatalln("Error initializing app:", err)
 		return nil, fmt.Errorf("error initializing app : %w", err)
 	}
 
