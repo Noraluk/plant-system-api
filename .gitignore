@@ -16,3 +16,5 @@
 
 /tmp
 .env
+plant-system-41237-firebase-adminsdk.json
+.DS_Store
