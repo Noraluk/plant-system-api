@@ -2,7 +2,7 @@ package healthrt
 
 import (
 	healthctlritf "plant-system-api/api/controllers/health/interface"
-	mock_healthctlritf "plant-system-api/api/controllers/health/mock"
+	mockHealthctlritf "plant-system-api/api/controllers/health/mock"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -32,7 +32,7 @@ func Test_healthRoute_SetRoutes(t *testing.T) {
 			name: "success",
 			fields: fields{
 				e:                echo.New(),
-				healthController: mock_healthctlritf.NewMockHealthController(ctrl),
+				healthController: mockHealthctlritf.NewMockHealthController(ctrl),
 			},
 		},
 	}

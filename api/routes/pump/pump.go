@@ -4,8 +4,8 @@ import (
 	pumpctrl "plant-system-api/api/controllers/pump"
 	pumpctrlitf "plant-system-api/api/controllers/pump/interface"
 	pumprtitf "plant-system-api/api/routes/pump/interface"
+	"plant-system-api/config"
 
-	"firebase.google.com/go/v4/db"
 	"github.com/labstack/echo/v4"
 )
 
@@ -14,7 +14,7 @@ type pumpRoute struct {
 	pumpController pumpctrlitf.PumpController
 }
 
-func NewPumpRoute(e *echo.Echo, firebaseClient *db.Client) pumprtitf.PumpRoute {
+func NewPumpRoute(e *echo.Echo, firebaseClient config.Client) pumprtitf.PumpRoute {
 	return &pumpRoute{
 		e:              e,
 		pumpController: pumpctrl.NewPumpController(firebaseClient),

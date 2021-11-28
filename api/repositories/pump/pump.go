@@ -5,16 +5,15 @@ import (
 	"fmt"
 	pumpmodel "plant-system-api/api/models/pump"
 	pumprepoitf "plant-system-api/api/repositories/pump/interface"
-
-	"firebase.google.com/go/v4/db"
+	"plant-system-api/config"
 )
 
 type pumpRepository struct {
 	ctx context.Context
-	ref *db.Ref
+	ref config.Ref
 }
 
-func NewPumpRepository(firebaseClient *db.Client) pumprepoitf.PumpRepository {
+func NewPumpRepository(firebaseClient config.Client) pumprepoitf.PumpRepository {
 	return &pumpRepository{
 		ctx: context.Background(),
 		ref: firebaseClient.NewRef("pump"),

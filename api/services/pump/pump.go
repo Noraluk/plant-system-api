@@ -1,19 +1,18 @@
 package pumpservice
 
 import (
-	"firebase.google.com/go/v4/db"
-
 	pumpmodel "plant-system-api/api/models/pump"
 	pumprepo "plant-system-api/api/repositories/pump"
 	pumprepoitf "plant-system-api/api/repositories/pump/interface"
 	pumpserviceitf "plant-system-api/api/services/pump/interface"
+	"plant-system-api/config"
 )
 
 type pumpService struct {
 	pumpRepository pumprepoitf.PumpRepository
 }
 
-func NewPumpService(firebaseClient *db.Client) pumpserviceitf.PumpService {
+func NewPumpService(firebaseClient config.Client) pumpserviceitf.PumpService {
 	return &pumpService{
 		pumpRepository: pumprepo.NewPumpRepository(firebaseClient),
 	}

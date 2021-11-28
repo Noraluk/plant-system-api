@@ -9,13 +9,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
-
-	healthctlritf "plant-system-api/api/controllers/health/interface"
 )
-
-func newStubHealthController() healthctlritf.HealthController {
-	return &healthController{}
-}
 
 func TestNewHealthController(t *testing.T) {
 	healthController := NewHealthController()
@@ -43,14 +37,12 @@ func Test_healthController_GetHealth(t *testing.T) {
 
 	tests := []struct {
 		name    string
-		ct      healthctlritf.HealthController
 		args    args
 		wantErr bool
 		want    want
 	}{
 		{
 			name:    "success",
-			ct:      newStubHealthController(),
 			args:    args{c: c},
 			wantErr: false,
 			want: want{

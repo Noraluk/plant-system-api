@@ -7,9 +7,9 @@ import (
 	pumpmodel "plant-system-api/api/models/pump"
 	pumpservice "plant-system-api/api/services/pump"
 	pumpserviceitf "plant-system-api/api/services/pump/interface"
+	"plant-system-api/config"
 	"strconv"
 
-	"firebase.google.com/go/v4/db"
 	"github.com/labstack/echo/v4"
 )
 
@@ -17,7 +17,7 @@ type pumpController struct {
 	pumpService pumpserviceitf.PumpService
 }
 
-func NewPumpController(firebaseClient *db.Client) pumpctrlitf.PumpController {
+func NewPumpController(firebaseClient config.Client) pumpctrlitf.PumpController {
 	return &pumpController{
 		pumpService: pumpservice.NewPumpService(firebaseClient),
 	}
