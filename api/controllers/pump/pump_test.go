@@ -102,7 +102,7 @@ func Test_pumpController_ActivePump(t *testing.T) {
 			want: want{
 				statusCode: http.StatusOK,
 				response: &pumpmodel.Pump{
-					PumpID:   pumpID,
+					ID:   pumpID,
 					IsActive: isActive,
 				},
 			},

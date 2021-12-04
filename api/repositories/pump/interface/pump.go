@@ -6,4 +6,5 @@ import (
 
 type PumpRepository interface {
 	ActivePump(pump *pumpmodel.Pump) error
+	IsPumpWorking(pump *pumpmodel.Pump) error
 }

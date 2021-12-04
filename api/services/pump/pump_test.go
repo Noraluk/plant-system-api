@@ -77,7 +77,7 @@ func Test_pumpService_ActivePump(t *testing.T) {
 			},
 			args: args{
 				pump: &pumpmodel.Pump{
-					PumpID:   pumpID,
+					ID:   pumpID,
 					IsActive: true,
 				},
 			},

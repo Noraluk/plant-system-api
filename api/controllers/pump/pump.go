@@ -8,7 +8,6 @@ import (
 	pumpservice "plant-system-api/api/services/pump"
 	pumpserviceitf "plant-system-api/api/services/pump/interface"
 	"plant-system-api/config"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,22 +23,33 @@ func NewPumpController(firebaseClient config.Client) pumpctrlitf.PumpController 
 }
 
 func (ct *pumpController) ActivePump(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	req := new(pumpmodel.PumpActiveReq)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	isActive, err := strconv.ParseBool(c.QueryParam("isActive"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
-	}
-
-	pump := &pumpmodel.Pump{PumpID: id, IsActive: isActive}
-	err = ct.pumpService.ActivePump(pump)
+	pump := &pumpmodel.Pump{ID: req.ID, IsActive: req.IsActive}
+	err := ct.pumpService.ActivePump(pump)
 	if err != nil {
 		log.Println("active pump error : ", err)
 		return c.JSON(http.StatusInternalServerError, "internal server error")
 	}
 
-	return c.JSON(http.StatusOK, pump)
+	return c.JSON(http.StatusOK, pumpmodel.PumpActiveResponse{ID: pump.ID, IsActive: pump.IsActive})
+}
+
+func (ct *pumpController) IsPumpWorking(c echo.Context) error {
+	req := new(pumpmodel.PumpIsWorkingReq)
+	if err := c.Bind(req); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	pump := &pumpmodel.Pump{ID: req.ID, IsWorking: req.IsWorking}
+	err := ct.pumpService.IsPumpWorking(pump)
+	if err != nil {
+		log.Println("checking pump working error : ", err)
+		return c.JSON(http.StatusInternalServerError, "internal server error")
+	}
+
+	return c.JSON(http.StatusOK, pumpmodel.PumpIsWorkingResponse{ID: pump.ID, IsWorking: pump.IsWorking})
 }

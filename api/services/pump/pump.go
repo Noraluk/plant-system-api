@@ -21,3 +21,7 @@ func NewPumpService(firebaseClient config.Client) pumpserviceitf.PumpService {
 func (s *pumpService) ActivePump(pump *pumpmodel.Pump) error {
 	return s.pumpRepository.ActivePump(pump)
 }
+
+func (s *pumpService) IsPumpWorking(pump *pumpmodel.Pump) error {
+	return s.pumpRepository.IsPumpWorking(pump)
+}

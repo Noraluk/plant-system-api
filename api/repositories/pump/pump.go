@@ -21,9 +21,17 @@ func NewPumpRepository(firebaseClient config.Client) pumprepoitf.PumpRepository 
 }
 
 func (repo *pumpRepository) ActivePump(pump *pumpmodel.Pump) error {
-	specificPump := repo.ref.Child(fmt.Sprintf("%d", pump.PumpID))
+	specificPump := repo.ref.Child(fmt.Sprintf("%d/isActive", pump.ID))
 	if err := specificPump.Set(repo.ctx, pump.IsActive); err != nil {
 		return fmt.Errorf("error activating pump : %w", err)
+	}
+	return nil
+}
+
+func (repo *pumpRepository) IsPumpWorking(pump *pumpmodel.Pump) error {
+	specificPump := repo.ref.Child(fmt.Sprintf("%d/isWorking", pump.ID))
+	if err := specificPump.Set(repo.ctx, pump.IsWorking); err != nil {
+		return fmt.Errorf("error checking pump working : %w", err)
 	}
 	return nil
 }
