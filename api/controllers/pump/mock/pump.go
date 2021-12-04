@@ -48,16 +48,30 @@ func (mr *MockPumpControllerMockRecorder) ActivePump(c interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ActivePump", reflect.TypeOf((*MockPumpController)(nil).ActivePump), c)
 }
 
-// IsPumpWorking mocks base method.
-func (m *MockPumpController) IsPumpWorking(c echo.Context) error {
+// AskPump mocks base method.
+func (m *MockPumpController) AskPump(c echo.Context) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsPumpWorking", c)
+	ret := m.ctrl.Call(m, "AskPump", c)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// IsPumpWorking indicates an expected call of IsPumpWorking.
-func (mr *MockPumpControllerMockRecorder) IsPumpWorking(c interface{}) *gomock.Call {
+// AskPump indicates an expected call of AskPump.
+func (mr *MockPumpControllerMockRecorder) AskPump(c interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsPumpWorking", reflect.TypeOf((*MockPumpController)(nil).IsPumpWorking), c)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AskPump", reflect.TypeOf((*MockPumpController)(nil).AskPump), c)
+}
+
+// GetPump mocks base method.
+func (m *MockPumpController) GetPump(c echo.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPump", c)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// GetPump indicates an expected call of GetPump.
+func (mr *MockPumpControllerMockRecorder) GetPump(c interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPump", reflect.TypeOf((*MockPumpController)(nil).GetPump), c)
 }

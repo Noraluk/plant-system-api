@@ -86,6 +86,20 @@ func (mr *MockRefMockRecorder) Child(path interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Child", reflect.TypeOf((*MockRef)(nil).Child), path)
 }
 
+// Get mocks base method.
+func (m *MockRef) Get(ctx context.Context, v interface{}) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", ctx, v)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockRefMockRecorder) Get(ctx, v interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockRef)(nil).Get), ctx, v)
+}
+
 // Set mocks base method.
 func (m *MockRef) Set(ctx context.Context, v interface{}) error {
 	m.ctrl.T.Helper()
