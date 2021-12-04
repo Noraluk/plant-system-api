@@ -47,3 +47,17 @@ func (mr *MockPumpRepositoryMockRecorder) ActivePump(pump interface{}) *gomock.C
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ActivePump", reflect.TypeOf((*MockPumpRepository)(nil).ActivePump), pump)
 }
+
+// IsPumpWorking mocks base method.
+func (m *MockPumpRepository) IsPumpWorking(pump *pumpmodel.Pump) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IsPumpWorking", pump)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// IsPumpWorking indicates an expected call of IsPumpWorking.
+func (mr *MockPumpRepositoryMockRecorder) IsPumpWorking(pump interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsPumpWorking", reflect.TypeOf((*MockPumpRepository)(nil).IsPumpWorking), pump)
+}
