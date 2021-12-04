@@ -86,7 +86,7 @@ func Test_pumpRepository_ActivePump(t *testing.T) {
 			},
 			args: args{
 				pump: &pumpmodel.Pump{
-					ID:   pumpID,
+					ID:       pumpID,
 					IsActive: true,
 				},
 			},
@@ -104,7 +104,7 @@ func Test_pumpRepository_ActivePump(t *testing.T) {
 			},
 			args: args{
 				pump: &pumpmodel.Pump{
-					ID:   pumpID,
+					ID:       pumpID,
 					IsActive: true,
 				},
 			},

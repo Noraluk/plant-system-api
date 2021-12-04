@@ -21,17 +21,27 @@ func NewPumpRepository(firebaseClient config.Client) pumprepoitf.PumpRepository 
 }
 
 func (repo *pumpRepository) ActivePump(pump *pumpmodel.Pump) error {
-	specificPump := repo.ref.Child(fmt.Sprintf("%d/isActive", pump.ID))
+	specificPump := repo.ref.Child(fmt.Sprintf("%d/is_active", pump.ID))
 	if err := specificPump.Set(repo.ctx, pump.IsActive); err != nil {
 		return fmt.Errorf("error activating pump : %w", err)
 	}
 	return nil
 }
 
-func (repo *pumpRepository) IsPumpWorking(pump *pumpmodel.Pump) error {
-	specificPump := repo.ref.Child(fmt.Sprintf("%d/isWorking", pump.ID))
-	if err := specificPump.Set(repo.ctx, pump.IsWorking); err != nil {
-		return fmt.Errorf("error checking pump working : %w", err)
+func (repo *pumpRepository) AskPump(pump *pumpmodel.Pump) error {
+	specificPump := repo.ref.Child(fmt.Sprintf("%d/is_ask", pump.ID))
+	if err := specificPump.Set(repo.ctx, pump.IsAsk); err != nil {
+		return fmt.Errorf("error ask pump : %w", err)
 	}
 	return nil
+}
+
+func (repo *pumpRepository) GetPump(id int) (*pumpmodel.Pump, error) {
+	var pump *pumpmodel.Pump
+	specificPump := repo.ref.Child(fmt.Sprintf("%d", id))
+	if err := specificPump.Get(repo.ctx, &pump); err != nil {
+		return nil, fmt.Errorf("error getting pump working : %w", err)
+	}
+	pump.ID = id
+	return pump, nil
 }

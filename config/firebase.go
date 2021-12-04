@@ -42,6 +42,7 @@ func (conf *client) NewRef(path string) Ref {
 type Ref interface {
 	Child(path string) Ref
 	Set(ctx context.Context, v interface{}) error
+	Get(ctx context.Context, v interface{}) error
 }
 
 type ref struct {
@@ -54,4 +55,8 @@ func (conf *ref) Child(path string) Ref {
 
 func (conf *ref) Set(ctx context.Context, v interface{}) error {
 	return conf.Ref.Set(ctx, v)
+}
+
+func (conf *ref) Get(ctx context.Context, v interface{}) error {
+	return conf.Ref.Get(ctx, v)
 }

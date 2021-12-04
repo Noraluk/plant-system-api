@@ -8,6 +8,7 @@ import (
 	pumpservice "plant-system-api/api/services/pump"
 	pumpserviceitf "plant-system-api/api/services/pump/interface"
 	"plant-system-api/config"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -38,18 +39,33 @@ func (ct *pumpController) ActivePump(c echo.Context) error {
 	return c.JSON(http.StatusOK, pumpmodel.PumpActiveResponse{ID: pump.ID, IsActive: pump.IsActive})
 }
 
-func (ct *pumpController) IsPumpWorking(c echo.Context) error {
-	req := new(pumpmodel.PumpIsWorkingReq)
+func (ct *pumpController) AskPump(c echo.Context) error {
+	req := new(pumpmodel.PumpAskingReq)
 	if err := c.Bind(req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 
-	pump := &pumpmodel.Pump{ID: req.ID, IsWorking: req.IsWorking}
-	err := ct.pumpService.IsPumpWorking(pump)
+	pump := &pumpmodel.Pump{ID: req.ID, IsAsk: req.IsAsk}
+	err := ct.pumpService.AskPump(pump)
 	if err != nil {
-		log.Println("checking pump working error : ", err)
+		log.Println("asking pump working error : ", err)
 		return c.JSON(http.StatusInternalServerError, "internal server error")
 	}
 
-	return c.JSON(http.StatusOK, pumpmodel.PumpIsWorkingResponse{ID: pump.ID, IsWorking: pump.IsWorking})
+	return c.JSON(http.StatusOK, pumpmodel.PumpAskingReq{ID: pump.ID, IsAsk: pump.IsAsk})
+}
+
+func (ct *pumpController) GetPump(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	pump, err := ct.pumpService.GetPump(id)
+	if err != nil {
+		log.Println("getting pump working error : ", err)
+		return c.JSON(http.StatusInternalServerError, "internal server error")
+	}
+
+	return c.JSON(http.StatusOK, pump)
 }

@@ -22,6 +22,10 @@ func (s *pumpService) ActivePump(pump *pumpmodel.Pump) error {
 	return s.pumpRepository.ActivePump(pump)
 }
 
-func (s *pumpService) IsPumpWorking(pump *pumpmodel.Pump) error {
-	return s.pumpRepository.IsPumpWorking(pump)
+func (s *pumpService) AskPump(pump *pumpmodel.Pump) error {
+	return s.pumpRepository.AskPump(pump)
+}
+
+func (s *pumpService) GetPump(id int) (*pumpmodel.Pump, error) {
+	return s.pumpRepository.GetPump(id)
 }
