@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"errors"
 	"log"
+	"net/http"
 	middlewareitf "plant-system-api/api/middleware/interface"
 	pumpmodel "plant-system-api/api/models/pump"
 	pumpservice "plant-system-api/api/services/pump"
@@ -26,33 +26,30 @@ func NewMiddleware(firebaseClient config.Client) middlewareitf.Middleware {
 
 func (m *middleware) AskPump(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if err := next(c); err != nil {
-			c.Error(err)
-		}
-
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			c.Error(err)
+			return echo.NewHTTPError(http.StatusBadRequest, err)
 		}
 
 		pump := &pumpmodel.Pump{ID: id, IsAsk: true, IsWorking: false}
 		err = m.pumpService.AskPump(pump)
 		if err != nil {
 			log.Println("asking pump working error : ", err)
-			c.Error(errors.New("internal server error"))
+			return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
 		}
 
 		time.Sleep(2 * time.Second)
 		pump, err = m.pumpService.GetPump(id)
 		if err != nil {
 			log.Println("getting pump working error : ", err)
-			c.Error(errors.New("internal server error"))
+			return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
 		}
 
 		if !pump.IsWorking {
-			c.Error(errors.New("pump is not working"))
+			log.Println("pump is not working")
+			return echo.NewHTTPError(http.StatusNoContent)
 		}
 
-		return nil
+		return next(c)
 	}
 }
