@@ -65,8 +65,9 @@ func Test_pumpController_ActivePump(t *testing.T) {
 	var (
 		fooErr                                   = errors.New("foo")
 		successContext, successRec               = getContextOfActivePumpSuccess(pumpID, isActive, t)
-		withoutReqBodyContext, withoutReqBodyRec = getContextOfActivePumpWithoutReqBody()
-		activePumpErrContext, activePumpErrRec   = getContextOfActivePumpError()
+		withoutIDParamContext, withoutIDParamRec = getContextOfActivePumpWithoutIDParam(pumpID)
+		withoutReqBodyContext, withoutReqBodyRec = getContextOfActivePumpWithoutReqBody(pumpID)
+		activePumpErrContext, activePumpErrRec   = getContextOfActivePumpError(pumpID, isActive, t)
 	)
 
 	type fields struct {
@@ -105,6 +106,20 @@ func Test_pumpController_ActivePump(t *testing.T) {
 					ID:       pumpID,
 					IsActive: isActive,
 				},
+			},
+		},
+		{
+			name: "error without id param",
+			fields: fields{
+				pumpService:         mockPumpserviceitf.NewMockPumpService(ctrl),
+				pumpServiceBehavior: func(m *mockPumpserviceitf.MockPumpService) {},
+			},
+			args: args{
+				c: withoutIDParamContext,
+			},
+			recorder: withoutIDParamRec,
+			want: want{
+				statusCode: http.StatusBadRequest,
 			},
 		},
 		{
@@ -162,32 +177,23 @@ func Test_pumpController_ActivePump(t *testing.T) {
 func getContextOfActivePumpSuccess(pumpID int, isActive bool, t *testing.T) (echo.Context, *httptest.ResponseRecorder) {
 	e := echo.New()
 
-	pumpActiveReq := pumpmodel.PumpActiveReq{ID: pumpID, IsActive: isActive}
+	pumpActiveReq := pumpmodel.PumpActiveReq{IsActive: isActive}
 	pumpActiveReqB, err := json.Marshal(pumpActiveReq)
 	assert.NoError(t, err)
 
-	req := httptest.NewRequest(http.MethodPatch, "/active", strings.NewReader(string(pumpActiveReqB)))
+	req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(string(pumpActiveReqB)))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
+	c.SetPath("/:id/active")
+	c.SetParamNames("id")
+	c.SetParamValues(fmt.Sprintf("%d", pumpID))
 
 	return c, rec
 }
 
-func getContextOfActivePumpWithoutReqBody() (echo.Context, *httptest.ResponseRecorder) {
-	e := echo.New()
-
-	req := httptest.NewRequest(http.MethodPatch, "/active", strings.NewReader(`{"id":"foo"}`))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
-
-	return c, rec
-}
-
-func getContextOfActivePumpError() (echo.Context, *httptest.ResponseRecorder) {
+func getContextOfActivePumpWithoutIDParam(pumpID int) (echo.Context, *httptest.ResponseRecorder) {
 	e := echo.New()
 
 	req := httptest.NewRequest(http.MethodPatch, "/", nil)
@@ -195,6 +201,40 @@ func getContextOfActivePumpError() (echo.Context, *httptest.ResponseRecorder) {
 
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
+
+	return c, rec
+}
+
+func getContextOfActivePumpWithoutReqBody(pumpID int) (echo.Context, *httptest.ResponseRecorder) {
+	e := echo.New()
+
+	req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(`{"is_active":"foo"}`))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/:id/active")
+	c.SetParamNames("id")
+	c.SetParamValues(fmt.Sprintf("%d", pumpID))
+
+	return c, rec
+}
+
+func getContextOfActivePumpError(pumpID int, isActive bool, t *testing.T) (echo.Context, *httptest.ResponseRecorder) {
+	e := echo.New()
+
+	pumpActiveReq := pumpmodel.PumpActiveReq{IsActive: isActive}
+	pumpActiveReqB, err := json.Marshal(pumpActiveReq)
+	assert.NoError(t, err)
+
+	req := httptest.NewRequest(http.MethodPatch, "/", strings.NewReader(string(pumpActiveReqB)))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/:id/active")
+	c.SetParamNames("id")
+	c.SetParamValues(fmt.Sprintf("%d", pumpID))
 
 	return c, rec
 }

@@ -30,7 +30,7 @@ func TestNewRoute(t *testing.T) {
 			args: args{
 				firebaseClient: mockConfig.NewMockClient(ctrl),
 				firebaseClientBehavior: func(m *mockConfig.MockClient) {
-					m.EXPECT().NewRef(gomock.Any())
+					m.EXPECT().NewRef(gomock.Any()).Times(2)
 				},
 			},
 			wantErr: false,

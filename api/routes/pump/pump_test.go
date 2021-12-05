@@ -2,7 +2,8 @@ package pumprt
 
 import (
 	pumpctrlitf "plant-system-api/api/controllers/pump/interface"
-	mock_pumpctrlitf "plant-system-api/api/controllers/pump/mock"
+	mockPumpctrlitf "plant-system-api/api/controllers/pump/mock"
+	mockMiddlewareitf "plant-system-api/api/middleware/mock"
 	mockConfig "plant-system-api/config/mock"
 	"testing"
 
@@ -36,7 +37,7 @@ func TestNewPumpRoute(t *testing.T) {
 			},
 			fields: fields{
 				firebaseClientBehavior: func(m *mockConfig.MockClient) {
-					m.EXPECT().NewRef(gomock.Any())
+					m.EXPECT().NewRef(gomock.Any()).Times(2)
 				},
 			},
 			wantErr: false,
@@ -59,8 +60,10 @@ func Test_pumpRoute_SetRoutes(t *testing.T) {
 	defer ctrl.Finish()
 
 	type fields struct {
-		e              *echo.Echo
-		pumpController pumpctrlitf.PumpController
+		e                  *echo.Echo
+		pumpController     pumpctrlitf.PumpController
+		middleware         *mockMiddlewareitf.MockMiddleware
+		middlewareBehavior func(m *mockMiddlewareitf.MockMiddleware)
 	}
 	tests := []struct {
 		name   string
@@ -70,15 +73,22 @@ func Test_pumpRoute_SetRoutes(t *testing.T) {
 			name: "success",
 			fields: fields{
 				e:              echo.New(),
-				pumpController: mock_pumpctrlitf.NewMockPumpController(ctrl),
+				pumpController: mockPumpctrlitf.NewMockPumpController(ctrl),
+				middleware:     mockMiddlewareitf.NewMockMiddleware(ctrl),
+				middlewareBehavior: func(m *mockMiddlewareitf.MockMiddleware) {
+					m.EXPECT().AskPump(gomock.Any()).Return(nil).AnyTimes()
+				},
 			},
 		},
 	}
 	for _, tt := range tests {
+		tt.fields.middlewareBehavior(tt.fields.middleware)
+
 		t.Run(tt.name, func(t *testing.T) {
 			r := &pumpRoute{
 				e:              tt.fields.e,
 				pumpController: tt.fields.pumpController,
+				middleware:     tt.fields.middleware,
 			}
 			r.SetRoutes()
 		})
