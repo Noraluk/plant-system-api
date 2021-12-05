@@ -44,12 +44,10 @@ func (repo *pumpRepository) IsPumpWorking(pump *pumpmodel.Pump) error {
 	return nil
 }
 
-func (repo *pumpRepository) GetPump(id int) (*pumpmodel.Pump, error) {
-	var pump *pumpmodel.Pump
-	specificPump := repo.ref.Child(fmt.Sprintf("%d", id))
+func (repo *pumpRepository) GetPump(pump *pumpmodel.Pump) (*pumpmodel.Pump, error) {
+	specificPump := repo.ref.Child(fmt.Sprintf("%d", pump.ID))
 	if err := specificPump.Get(repo.ctx, &pump); err != nil {
 		return nil, fmt.Errorf("error getting pump working : %w", err)
 	}
-	pump.ID = id
 	return pump, nil
 }

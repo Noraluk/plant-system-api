@@ -32,5 +32,5 @@ func (s *pumpService) AskPump(pump *pumpmodel.Pump) error {
 }
 
 func (s *pumpService) GetPump(id int) (*pumpmodel.Pump, error) {
-	return s.pumpRepository.GetPump(id)
+	return s.pumpRepository.GetPump(&pumpmodel.Pump{ID: id})
 }

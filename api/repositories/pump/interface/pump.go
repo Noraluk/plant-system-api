@@ -9,5 +9,5 @@ type PumpRepository interface {
 	AskPump(pump *pumpmodel.Pump) error
 	IsPumpWorking(pump *pumpmodel.Pump) error
 
-	GetPump(id int) (*pumpmodel.Pump, error)
+	GetPump(pump *pumpmodel.Pump) (*pumpmodel.Pump, error)
 }
