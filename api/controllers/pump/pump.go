@@ -30,8 +30,13 @@ func (ct *pumpController) ActivePump(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	pump := &pumpmodel.Pump{ID: req.ID, IsActive: req.IsActive}
-	err := ct.pumpService.ActivePump(pump)
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	pump := &pumpmodel.Pump{ID: id, IsActive: req.IsActive}
+	err = ct.pumpService.ActivePump(pump)
 	if err != nil {
 		log.Println("active pump error : ", err)
 		return c.JSON(http.StatusInternalServerError, "internal server error")

@@ -8,7 +8,6 @@ type Pump struct {
 }
 
 type PumpActiveReq struct {
-	ID       int  `json:"id" `
 	IsActive bool `json:"is_active" `
 }
 
