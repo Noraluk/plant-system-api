@@ -23,6 +23,11 @@ func (s *pumpService) ActivePump(pump *pumpmodel.Pump) error {
 }
 
 func (s *pumpService) AskPump(pump *pumpmodel.Pump) error {
+	err := s.pumpRepository.IsPumpWorking(pump)
+	if err != nil {
+		return err
+	}
+
 	return s.pumpRepository.AskPump(pump)
 }
 

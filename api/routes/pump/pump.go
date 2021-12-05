@@ -24,7 +24,7 @@ func NewPumpRoute(e *echo.Echo, firebaseClient config.Client) pumprtitf.PumpRout
 func (r *pumpRoute) SetRoutes() {
 	pumpGroup := r.e.Group("/pumps")
 	pumpGroup.PATCH("/active", r.pumpController.ActivePump)
-	pumpGroup.PATCH("/ask", r.pumpController.AskPump)
+	pumpGroup.PATCH("/:id/ask", r.pumpController.AskPump)
 
 	pumpGroup.GET("/:id", r.pumpController.GetPump)
 }

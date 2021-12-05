@@ -17,11 +17,6 @@ type PumpActiveResponse struct {
 	IsActive bool `json:"is_active"`
 }
 
-type PumpAskingReq struct {
-	ID    int  `json:"id" `
-	IsAsk bool `json:"is_ask" `
-}
-
 type PumpAskingResponse struct {
 	ID    int  `json:"id"`
 	IsAsk bool `json:"is_ask"`

@@ -36,6 +36,14 @@ func (repo *pumpRepository) AskPump(pump *pumpmodel.Pump) error {
 	return nil
 }
 
+func (repo *pumpRepository) IsPumpWorking(pump *pumpmodel.Pump) error {
+	specificPump := repo.ref.Child(fmt.Sprintf("%d/is_working", pump.ID))
+	if err := specificPump.Set(repo.ctx, pump.IsWorking); err != nil {
+		return fmt.Errorf("error is pump working : %w", err)
+	}
+	return nil
+}
+
 func (repo *pumpRepository) GetPump(id int) (*pumpmodel.Pump, error) {
 	var pump *pumpmodel.Pump
 	specificPump := repo.ref.Child(fmt.Sprintf("%d", id))
