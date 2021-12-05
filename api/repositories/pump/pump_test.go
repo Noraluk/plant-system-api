@@ -329,8 +329,7 @@ func Test_pumpRepository_GetPump(t *testing.T) {
 			},
 			args: args{
 				pump: &pumpmodel.Pump{
-					ID:       pumpID,
-					IsActive: true,
+					ID: pumpID,
 				},
 			},
 			want:    expected,

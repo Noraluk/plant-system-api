@@ -182,3 +182,47 @@ func Test_ref_Set(t *testing.T) {
 		})
 	}
 }
+
+func Test_ref_Get(t *testing.T) {
+	const (
+		mockDB = "https://mock-db.firebaseio.com"
+	)
+	var (
+		conf = &firebase.Config{
+			DatabaseURL: mockDB,
+		}
+		opt = option.WithoutAuthentication()
+	)
+
+	firebaseClient, err := NewFirebaseClient(conf, opt)
+	assert.NoError(t, err)
+	client := NewClient(firebaseClient)
+
+	type args struct {
+		ctx context.Context
+		v   interface{}
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "cannot get by mockdb (fake db)",
+			args: args{
+				ctx: context.Background(),
+				v:   "",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			ref := client.NewRef("")
+			err := ref.Get(tt.args.ctx, tt.args.v)
+			if tt.wantErr {
+				assert.Error(t, err)
+			}
+		})
+	}
+}
