@@ -27,7 +27,7 @@ func NewPumpController(firebaseClient config.Client) pumpctrlitf.PumpController 
 func (ct *pumpController) ActivePump(c echo.Context) error {
 	req := new(pumpmodel.PumpActiveReq)
 	if err := c.Bind(req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	pump := &pumpmodel.Pump{ID: req.ID, IsActive: req.IsActive}
