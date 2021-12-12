@@ -1,7 +1,7 @@
 name: CI/CD Pipeline to AWS CodeDeploy
 on:
   push:
-    branches: [ main ]
+    branches: [ develop ]
 
 jobs:
   continuous-integration:
