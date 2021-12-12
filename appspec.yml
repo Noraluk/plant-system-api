@@ -5,10 +5,10 @@ files:
     destination: /home/ec2-user/plant-system-api/
 hooks:
   AfterInstall:
-   - location: setup.sh
+   - location: scripts/setup.sh
      timeout: 300
      runas: root
   ApplicationStart:
-   - location: run.sh
+   - location: scripts/run.sh
      timeout: 300
      runas: root
