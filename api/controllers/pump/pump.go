@@ -27,19 +27,19 @@ func NewPumpController(firebaseClient config.Client) pumpctrlitf.PumpController 
 func (ct *pumpController) ActivePump(c echo.Context) error {
 	req := new(pumpmodel.PumpActiveReq)
 	if err := c.Bind(req); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	pump := &pumpmodel.Pump{ID: id, IsActive: req.IsActive}
 	err = ct.pumpService.ActivePump(pump)
 	if err != nil {
 		log.Println("active pump error : ", err)
-		return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
+		return c.JSON(http.StatusInternalServerError, "internal server error")
 	}
 
 	return c.JSON(http.StatusOK, pumpmodel.PumpActiveResponse{ID: pump.ID, IsActive: pump.IsActive})
@@ -48,21 +48,21 @@ func (ct *pumpController) ActivePump(c echo.Context) error {
 func (ct *pumpController) AskPump(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	pump := &pumpmodel.Pump{ID: id, IsAsk: true, IsWorking: false}
 	err = ct.pumpService.AskPump(pump)
 	if err != nil {
 		log.Println("asking pump working error : ", err)
-		return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
+		return c.JSON(http.StatusInternalServerError, "internal server error")
 	}
 
 	time.Sleep(2 * time.Second)
 	pump, err = ct.pumpService.GetPump(id)
 	if err != nil {
 		log.Println("getting pump working error : ", err)
-		return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
+		return c.JSON(http.StatusInternalServerError, "internal server error")
 	}
 
 	return c.JSON(http.StatusOK, pump)
@@ -71,13 +71,13 @@ func (ct *pumpController) AskPump(c echo.Context) error {
 func (ct *pumpController) GetPump(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	pump, err := ct.pumpService.GetPump(id)
 	if err != nil {
 		log.Println("getting pump working error : ", err)
-		return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
+		return c.JSON(http.StatusInternalServerError, "internal server error")
 	}
 
 	return c.JSON(http.StatusOK, pump)
