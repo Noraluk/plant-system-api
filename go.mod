@@ -4,6 +4,7 @@ module plant-system-api
 go 1.17
 
 require (
+	firebase.google.com/go v3.13.0+incompatible
 	firebase.google.com/go/v4 v4.7.1
 	github.com/golang/mock v1.6.0
 	github.com/labstack/echo/v4 v4.6.3
