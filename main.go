@@ -7,7 +7,7 @@ import (
 	"plant-system-api/api/routes"
 	"plant-system-api/config"
 
-	firebase "firebase.google.com/go"
+	firebase "firebase.google.com/go/v4"
 	"github.com/labstack/echo/v4"
 	"google.golang.org/api/option"
 )
