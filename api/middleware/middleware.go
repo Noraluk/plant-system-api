@@ -38,7 +38,7 @@ func (m *middleware) AskPump(next echo.HandlerFunc) echo.HandlerFunc {
 			return echo.NewHTTPError(http.StatusInternalServerError, "internal server error")
 		}
 
-		time.Sleep(2 * time.Second)
+		time.Sleep(5 * time.Second)
 		pump, err = m.pumpService.GetPump(id)
 		if err != nil {
 			log.Println("getting pump working error : ", err)
